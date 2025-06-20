@@ -24,7 +24,7 @@ Partitionnement réalisé avec `fdisk /dev/sda`, puis création de deux partitio
 
 ### **➤ Formatage de la partition EFI :**
 
-`mkfs.fat -F32 /dev/sda1`
+`mkfs.fat -F32 /dev/sda1` -> Si une variante FAT n'est pas utilisée pour l'ESP, le micrologiciel UEFI du système n'est pas sûr de trouver le chargeur de démarrage (ou le noyau Linux) et ne sera probablement pas en mesure de démarrer le système !
 
 👉 La partition EFI doit obligatoirement être en **FAT32**, car c’est le seul format lisible nativement par le firmware UEFI pour charger le bootloader (`.efi`).
 
