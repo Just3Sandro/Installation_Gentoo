@@ -41,9 +41,9 @@ Partitionnement réalisé avec `cfdisk /dev/sda`, puis création de 4 partitions
 
 ### **➤ Formatage de la partition racine :**
 
-`mkfs.ext4 /dev/sda2`
+`mkfs.xfs /dev/sda2`
 
-👉 On utilise **ext4**, un système de fichiers stable et performant, pour y installer Gentoo.
+👉 On utilise **XFS**, Supporte reflink et Copy-on-Write (CoW) : très utile si beaucoup de compilations ou du développement (comme sur Gentoo).. **EXT4** bien aussi car plus flexible,  facile de redimensionner, (souvent mieux pour utilisateur lambda) mais ne supporte pas reflink et CoW
 
 ---
 
