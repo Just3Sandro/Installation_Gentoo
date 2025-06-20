@@ -12,12 +12,13 @@ je choisis **GPT (GUID Partition Table)** car :
 
 * il est plus fiable que MBR (DOS).
 
-Partitionnement réalisé avec `fdisk /dev/sda`, puis création de deux partitions :
-
-* `/dev/sda1` : 512 Mo – utilisée pour la partition EFI  -> Si une variante FAT n'est pas utilisée pour l'ESP, le micrologiciel UEFI du système n'est pas sûr de trouver le chargeur de démarrage (ou le noyau Linux) et ne sera probablement pas en mesure de démarrer le système !
-
-* `/dev/sda2` : le reste – utilisée pour la racine `/`
-
+Partitionnement réalisé avec `cfdisk /dev/sda`, puis création de 4 partitions :
+---
+Partition	Taille	Utilité
+sda1 = EFI	256 Mo	Boot UEFI
+sda2 = Swap	4 Go	Mémoire virtuelle (pas d'hibernation)
+sda3 = 20 Go	Système Linux
+sda4 = /home	le reste	Données personnelles
 ---
 
 ## **💽 2\. Formatage des partitions**
