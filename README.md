@@ -13,13 +13,23 @@ je choisis **GPT (GUID Partition Table)** car :
 * il est plus fiable que MBR (DOS).
 
 Partitionnement réalisé avec `cfdisk /dev/sda`, puis création de 4 partitions :
----
-Partition	Taille	Utilité
-sda1 = EFI	256 Mo	Boot UEFI
-sda2 = Swap	4 Go	Mémoire virtuelle (pas d'hibernation)
-sda3 = 20 Go	Système Linux
-sda4 = /home	le reste	Données personnelles
----
+
+## 🧩 Tableau des partitions
+
+| Partition   | Taille       | Utilité                     |
+|-------------|--------------|------------------------------|
+| `/boot/efi` | 256 Mo       | Démarrage UEFI               |
+| `swap`      | 1–2 Go       | Mémoire virtuelle (sans hibernation) |
+| `/`         | 8–12 Go      | Système Linux (racine)       |
+| `/home`     | le reste     | Données personnelles         |
+
+## 📝 Notes
+
+- **/boot/efi** : Obligatoire pour les systèmes en mode UEFI. Contient les fichiers de démarrage.
+- **swap** :Si tous les programmes en cours utilisent 100 % de la RAM, Linux peut déplacer temporairement certaines données dans le swap pour éviter un plantage. / C’est un filet de sécurité. 
+- **/** : Contient tous les fichiers du système. 20 Go sont suffisants pour la majorité des distributions Linux légères à moyennes.
+- **/home** : Contient les fichiers de l'utilisateur (documents, config, téléchargements, etc.). Allouer le reste ici est généralement le plus logique.
+
 
 ## **💽 2\. Formatage des partitions**
 
