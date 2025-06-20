@@ -14,7 +14,7 @@ je choisis **GPT (GUID Partition Table)** car :
 
 Partitionnement réalisé avec `fdisk /dev/sda`, puis création de deux partitions :
 
-* `/dev/sda1` : 512 Mo – utilisée pour la partition EFI
+* `/dev/sda1` : 512 Mo – utilisée pour la partition EFI  -> Si une variante FAT n'est pas utilisée pour l'ESP, le micrologiciel UEFI du système n'est pas sûr de trouver le chargeur de démarrage (ou le noyau Linux) et ne sera probablement pas en mesure de démarrer le système !
 
 * `/dev/sda2` : le reste – utilisée pour la racine `/`
 
