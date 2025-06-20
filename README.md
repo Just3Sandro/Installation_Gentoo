@@ -16,12 +16,12 @@ Partitionnement réalisé avec `cfdisk /dev/sda`, puis création de 4 partitions
 
 ## 🧩 Tableau des partitions
 
-| Partition   | Taille       | Utilité                     |
-|-------------|--------------|------------------------------|
-| `/boot/efi` | 256 Mo       | Démarrage UEFI               |
-| `swap`      | 4 Go         | Mémoire virtuelle (sans hibernation) |
-| `/`         | 20 Go        | Système Linux (racine)       |
-| `/home`     | le reste     | Données personnelles         |
+| Partition          | Taille       | Utilité                      |
+|-------------       |--------------|------------------------------|
+| `/boot/efi (sda1)` | 256 Mo       | Démarrage UEFI               |
+| `swap (sda2)`      | 4 Go         | Mémoire virtuelle (sans hibernation) |
+| `/ (sda3)`         | 20 Go        | Système Linux (racine)       |
+| `/home (sda4)`     | le reste     | Données personnelles         |
 
 ## 📝 Notes
 
