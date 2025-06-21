@@ -41,9 +41,17 @@ Partitionnement réalisé avec `cfdisk /dev/sda`, puis création de 4 partitions
 
 ### **➤ Formatage de la partition racine :**
 
-`mkfs.xfs /dev/sda2`
+`mkfs.xfs /dev/sda3` / on fait de meme pour sd4
 
 👉 On utilise **XFS**, Supporte reflink et Copy-on-Write (CoW) : très utile si beaucoup de compilations ou du développement (comme sur Gentoo).. **EXT4** bien aussi car plus flexible,  facile de redimensionner, (souvent mieux pour utilisateur lambda) mais ne supporte pas reflink et CoW
+
+### **➤ Formatage de la partition swap :**
+
+`mkswap /dev/sda2`
+
+**➤ Activation de la partition d'échange :**
+
+`swapon /dev/sda2`
 
 ---
 
@@ -51,35 +59,37 @@ Partitionnement réalisé avec `cfdisk /dev/sda`, puis création de 4 partitions
 
 ### **➤ Montage de la racine :**
 
-`mount /dev/sda2 /mnt/gentoo`
+`mount /dev/sda3 /mnt/gentoo`
 
 👉 On prépare l’environnement d’installation : `/mnt/gentoo` va devenir la base temporaire du futur système Gentoo.
 
-### **➤ Création et montage du point `/boot/efi` :**
+### **➤ Création et montage du point `/efi` :**
 
-`mkdir -p /mnt/gentoo/boot/efi`  
-`mount /dev/sda1 /mnt/gentoo/boot/efi`
+`mkdir -p /mnt/gentoo/efi`  
+`mount /dev/sda1 /mnt/gentoo/efi`
 
-👉 Préparation de l’arborescence pour pouvoir plus tard installer GRUB (le bootloader EFI) à l’intérieur de `/boot/efi`.
+👉 Préparation de l’arborescence pour pouvoir plus tard installer GRUB (le bootloader EFI) à l’intérieur de `/efi`.
 
 ---
 
-## **🧠 4\. Création et activation du fichier swap**
+## **💽 3\. Instalation de Stage3 / systemeD **
 
-### **➤ Création d’un fichier de 2 Go :**
+Il faut, pour installer stage3 copier une longue addresse sur le site officiel de gentoo, jactive donc le ssh : 
+`/etc/init.d/sshd start`
 
-`dd if=/dev/zero of=/mnt/gentoo/swap bs=1G count=2`  
-`chmod 600 /mnt/gentoo/swap`
+on configure un mdp avec `passwd` et on trouve notre ip grace à `ip a`
 
-👉 `dd` génère un fichier vide de 2 Go rempli de zéros.  
- 👉 `chmod 600` protège le fichier (lecture/écriture autorisée uniquement à root).
+on fait un `wget https://distfiles.gentoo.org/releases/amd64/autobuilds/20250615T163733Z/stage3-amd64-systemd-20250615T163733Z.tar.xz`
 
-### **➤ Formatage et activation :**
+puis `tar xpvf stage3-*.tar.xz --xattrs-include='*.*' --numeric-owner -C /mnt/gentoo` pour l'installer dans `/mnt/gentoo`
 
-`mkswap /mnt/gentoo/swap`  
-`swapon /mnt/gentoo/swap`
-
-👉 Le fichier devient un espace de **swap** : utilisé comme **mémoire virtuelle** si la RAM est saturée, ou pendant de longues compilations (comme dans Gentoo).
+x extraire, indique quetar va extraire le contenu de l’archive ;
+p préserver les permissions ;
+v sortie verbeuse ;
+f fichier, indique à tar le nom du fichier d’entrée ;
+--xattrs-include='*.*' permet de conserver les attributs étendus contenus dans tous les espaces de noms de l’archive ;
+--numeric-owner assure que les identifiants de groupe et d’utilisateur des fichiers extraits depuis l’archive tar restent les mêmes que ceux voulus par l’équipe de Gentoo (même si certains utilisateurs aventureux n’utilisent pas les environnements Gentoo officiels) ;
+-C /mnt/gentoo extrait les fichiers dans la partition racine, peu importe le répertoire actuel.
 
 ## 🔁 5\. Montage des systèmes essentiels (proc, sys, dev, run)
 
@@ -123,7 +133,7 @@ Partitionnement réalisé avec `cfdisk /dev/sda`, puis création de 4 partitions
  Ici, on a choisi le profil **`default/linux/amd64/17.1`**, qui est **neutre, minimal et parfait pour apprendre**.  
  (Note : un passage futur au profil `hardened` est prévu pour durcir la sécurité système.)
 
----
+--- QUAND ON FAITE emerge --ask --verbose --update --deep --changed-use @world -> cqr erreur echo "sys-devel/m4 -nls" >> /etc/portage/package.use/m4-fix
 
 ## **💻 8\. Installation et configuration de GRUB en mode UEFI**
 
